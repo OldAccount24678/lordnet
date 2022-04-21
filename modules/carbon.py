@@ -73,4 +73,4 @@ async def example(_, message: Message):
 
 
         
-made_by = "@lordnet_modules"
+made_by = "@lordnet_modules | @AmokDev"

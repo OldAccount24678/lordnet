@@ -5,7 +5,7 @@ from pyrogram import filters
 #¯\_(ツ)_/¯
 
 @module(commands="russia", args=["on/off"], desc="заменяет буквы З и В на Z & V в тексте")
-async def example(_, message: Message):
+async def russia(_, message: Message):
 	try:
 		ZV = message.command[1]
 		db.set(f"Z", ZV)
@@ -14,7 +14,7 @@ async def example(_, message: Message):
 		await message.edit("[<b>RUSSIA</b>] Введите значения on/off!")
 
 @module(filters.me)
-async def russia(_, message: Message):
+async def russiaZ(_, message: Message):
 	val = db.get("Z")
 	if val == "on":
 		text = message.text.replace("з", "Z").replace("в", "V").replace("З", "Z").replace("В", "V")

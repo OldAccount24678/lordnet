@@ -85,4 +85,4 @@ async def hearts(_, message: Message):
         final_caption = '👉<a href="https://t.me/lordnet_modules">❤</a>👈'
     await message.edit(final_caption, disable_web_page_preview=True)
 
-made_by = "@lordnet_modules"
+made_by = "@lordnet_modules | @AmokDev"

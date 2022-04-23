@@ -1,17 +1,18 @@
 from helper import module, Message, db
 
-from pyrogram import filters
+from pyrogram import filters, ContinuePropagation
 
 #¯\_(ツ)_/¯
+# ya eпаL piton
 
 @module(commands="aristocrat", args=["on/off"], desc="заменяет знаки , и . на 、 & 。 и ставит в начале ー (аристократо бейба)")
-async def aristocrat(_, message: Message):
+async def example(_, message: Message):
 	try:
 		aristocratos = message.command[1]
 		db.set(f"aristocrato", aristocratos)
-		await message.edit("[<b>Aristocrat</b>] Успешно!")
+		await message.edit(f"[<b>RUSSIA</b>] Успешно поставлено значение {aristocratos}")
 	except IndexError:
-		await message.edit("[<b>Aristocrat</b>] Введите значения on/off!")
+		await message.edit("[<b>Aristocrat</b>] Введите значения on/off! (IndexError)")
 
 @module(filters.me)
 async def aristocrato(_, message: Message):
@@ -21,5 +22,6 @@ async def aristocrato(_, message: Message):
 		await message.edit(f"ー {text}")
 	else:
 		pass
+	raise ContinuePropagation
 
 made_by = "@lordnet_modules | @AmokDev"

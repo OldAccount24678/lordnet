@@ -1,18 +1,13 @@
-from helper import module, Message
-
-#from helper import import_library, aimport_library
-
-# ¯\_(ツ)_/¯
+from helper import module, Message, session
 
 import urllib.parse
-import aiohttp
 import json
 import os
 from io import BytesIO
 
 async def get_code(code: str):
     return urllib.parse.quote_plus(code)
-    # return code.replace("\n", "%250A")
+
 
 @module(commands=["carbon", "code", "код"], args=["code/file/reply"], description="преобразование кода в картинку")
 async def example(_, message: Message):
@@ -52,16 +47,15 @@ async def example(_, message: Message):
 
         await message.edit("<b>Генерация картинки...</b>")
 
-        async with aiohttp.ClientSession() as session:
-            async with session.post(
-                "https://carbonnowsh.herokuapp.com/",
-                json={"code": await get_code(code)},
-            ) as resp:
-                if not resp.ok:
-                    return await message.edit("<b>Ошибка при получении изображения.</b>")
-                image = BytesIO(await resp.read())
-                image.name = "dudnik.jpg"
-                image.seek(0)
+        async with session.post(
+            "http://lordcarbon.herokuapp.com/",
+            json={"code": await get_code(code)},
+        ) as resp:
+            if not resp.ok:
+                return await message.edit("<b>Ошибка при получении изображения.</b>")
+            image = BytesIO(await resp.read())
+            image.name = "carbon.jpg"
+            image.seek(0)
         await message.reply_document(image)
         await message.delete()
 
@@ -73,4 +67,4 @@ async def example(_, message: Message):
 
 
         
-made_by = "@lordnet_modules | @AmokDev"
+made_by = "@lordnet_modules"

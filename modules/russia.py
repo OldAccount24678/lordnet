@@ -8,8 +8,11 @@ from pyrogram import filters, ContinuePropagation
 async def example(_, message: Message):
 	try:
 		ZV = message.command[1]
-		db.set(f"Z", ZV)
-		await message.edit("[<b>RUSSIA</b>] Успешно!")
+		if ZV != "on" or ZV != "off":
+			await message.edit("[<b>RUSSIA</b>] Введите значения on/off!")
+		else:
+			db.set(f"Z", ZV)
+			await message.edit(f"[<b>RUSSIA</b>] Успешно поставлено значение {ZV}")
 	except IndexError:
 		await message.edit("[<b>RUSSIA</b>] Введите значения on/off!")
 

@@ -6,7 +6,7 @@ from pyrogram import filters, ContinuePropagation
 # ya eпаL piton
 
 @module(commands="aristocrat", args=["on/off"], desc="заменяет знаки , и . на 、 & 。 и ставит в начале ー (аристократо бейба)")
-async def example(_, message: Message):
+async def arist(_, message: Message):
 	try:
 		aristocratos = message.command[1]
 		db.set(f"aristocrato", aristocratos)
@@ -14,14 +14,16 @@ async def example(_, message: Message):
 	except IndexError:
 		await message.edit("[<b>Aristocrat</b>] Введите значения on/off! (IndexError)")
 
-@module(filters.me)
+
+@module(filters.outgoing & ~filters.edited & filters.text)
 async def aristocrato(_, message: Message):
 	val = db.get("aristocrato")
-	if val == "on":
-		text = message.text.replace(",", "、").replace(".", "。")
-		await message.edit(f"ー {text}")
-	else:
+	try:
+		if val == "on":
+			text = message.text.replace(",", "、").replace(".", "。")
+			await message.edit(f"ー {text}")
+	except:
 		pass
 	raise ContinuePropagation
 
-made_by = "@lordnet_modules | @AmokDev"
+made_by = "@lordnet_modules | @AmokDev | @lord_code"

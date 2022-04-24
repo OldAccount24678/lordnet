@@ -6,11 +6,11 @@ from pyrogram import filters, ContinuePropagation
 # ya eпаL piton
 
 @module(commands="aristocrat", args=["on/off"], desc="заменяет знаки , и . на 、 & 。 и ставит в начале ー (аристократо бейба)")
-async def arist(_, message: Message):
+async def example(_, message: Message):
 	try:
 		aristocratos = message.command[1]
 		db.set(f"aristocrato", aristocratos)
-		await message.edit(f"[<b>RUSSIA</b>] Успешно поставлено значение {aristocratos}")
+		await message.edit(f"[<b>Aristocrat</b>] Успешно поставлено значение {aristocratos}")
 	except IndexError:
 		await message.edit("[<b>Aristocrat</b>] Введите значения on/off! (IndexError)")
 

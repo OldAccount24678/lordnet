@@ -9,8 +9,12 @@ from pyrogram.types import Message
 from helper import import_library
 from helper import module
 from helper import session as req
+import os.path
 
-get = req.get
+async def get(url):
+    async with req.get(url) as res:
+        return res
+
 
 Image = import_library('PIL.Image', 'pillow')
 ImageFont = import_library('PIL.ImageFont')
@@ -20,16 +24,36 @@ from io import BytesIO
 from random import randint, choice
 from textwrap import wrap
 
+clrs = {'red': 1, 'lime': 2, 'green': 3, 'blue': 4, 'cyan': 5, 'brown': 6, 'purple': 7, 'pink': 8, 'orange': 9, 'yellow': 10, 'white': 11, 'black': 12}
+url = "https://raw.githubusercontent.com/KeyZenD/AmongUs/master/"
+
+
+if not os.path.isfile('downloads/bold.ttf'):
+    loop = asyncio.get_event_loop()
+    res = loop.run_until_complete(get(url+"bold.ttf"))
+    data = loop.run_until_complete(res.read())
+    datapath = 'downloads/bold.ttf'
+    open(datapath, 'wb').write(data)
+    
+font = ImageFont.truetype(datapath, 60)
+
+
+async def get_impostor(index: int, url: str):
+    path = f'downloads/{index}_amogus.png'
+    if not os.path.isfile(path):
+        res = await get(url)
+        data = await res.read()
+        open(path, 'wb').write(data)
+    return path
+
+
 @module(commands=["amogus", "амогус"], args=["text"], desc="amgus, tun tun tun tun tun tun tun tudududn tun tun")
 async def example(_, message: Message):
-	clrs = {'red': 1, 'lime': 2, 'green': 3, 'blue': 4, 'cyan': 5, 'brown': 6, 'purple': 7, 'pink': 8, 'orange': 9, 'yellow': 10, 'white': 11, 'black': 12}
 	clr = randint(1,12)
 	text = " ".join(message.command[1:])
-
 	await message.edit("<b>amgus, tun tun tun tun tun tun tun tudududn tun tun...</b>")
-	url = "https://raw.githubusercontent.com/KeyZenD/AmongUs/master/"
-	font = ImageFont.truetype(BytesIO(await (await get(url+"bold.ttf").read())), 60)
-	imposter = Image.open(BytesIO(await (await get(f"{url}{clr}.png").read())))
+        data = await get_impostor(clr, f"{url}{clr}.png")
+	imposter = Image.open(data)
 	text_ = "\n".join(["\n".join(wrap(part, 30)) for part in text.split("\n")])
 	w, h = ImageDraw.Draw(Image.new("RGB", (1,1))).multiline_textsize(text_, font, stroke_width=2)
 	text = Image.new("RGBA", (w+30, h+30))
@@ -47,4 +71,4 @@ async def example(_, message: Message):
 	await message.delete()
 	await client.send_sticker(message.chat.id, output)
 
-made_by = "@AmokDev"
+made_by = "@SosokDev"

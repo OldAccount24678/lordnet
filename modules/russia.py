@@ -14,7 +14,7 @@ async def example(_, message: Message):
 	except IndexError:
 		await message.edit("[<b>RUSSIA</b>] Введите значения on/off! (IndexError)")
 
-@module(filters.me)
+@module(filters.outgoing & ~filters.edited & filters.text)
 async def russia(_, message: Message):
 	val = db.get("Z")
 	if val == "on":
